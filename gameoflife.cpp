@@ -12,7 +12,7 @@ GameOfLife::GameOfLife(const sf::String& title, unsigned int width, unsigned int
 		throw std::runtime_error("Unable to load game icon image!");
 	}
 	// Window stuff
-	auto style = (isFullScreen) ? sf::Style::Fullscreen : sf::Style::Default;
+	int style = (isFullScreen) ? static_cast<int>(sf::Style::Fullscreen) : static_cast<int>(sf::Style::Default);
 	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), title, style);
 	window->setIcon(iconImage.getSize().x, iconImage.getSize().y, iconImage.getPixelsPtr());
 

@@ -8,11 +8,11 @@
 template<class T>
 class Grid {
 public:
-	Grid(unsigned int width, unsigned int height) : arrWidth(width), arrHeight(height) {
+	Grid(size_t width, size_t height) : arrWidth(width), arrHeight(height) {
 		arr.resize(width * height);
 	}
 
-	T& at(unsigned int row, unsigned int col) {
+	T& at(size_t row, size_t col) {
 		// Range checking
 		if (row >= arrWidth) {
 			throw std::runtime_error("Grid row is greather than or equal to array width!");
@@ -31,7 +31,7 @@ public:
 		return arr;
 	}
 private:
-	unsigned int arrWidth, arrHeight;
+	size_t arrWidth, arrHeight;
 	std::vector<T> arr;
 };
 

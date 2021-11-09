@@ -7,7 +7,6 @@
 #include "debugmode.hpp"
 #include "entitymanager.hpp"
 #include "entity.hpp"
-#include "texturemanager.hpp"
 
 #ifdef DEBUG
 #include <iostream>
@@ -119,8 +118,8 @@ unsigned int EntityManager::getNumNeighbours(int x, int y) {
 }
 
 // Getters and Setters
-void EntityManager::setIsPlaying(bool isPlayingMotion) {
-	this->isPlayingMotion = isPlayingMotion;
+void EntityManager::setIsPlaying(bool isRunning) {
+	isPlayingMotion = isRunning;
 }
 
 bool EntityManager::isPlaying() const {

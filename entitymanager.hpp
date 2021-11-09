@@ -8,7 +8,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "debugmode.hpp"
-#include "texturemanager.hpp"
 #include "entity.hpp"
 #include "grid.hpp"
 
@@ -43,7 +42,7 @@ public:
 	bool getGridEntityStateAt(T x, T y) const {
 		if (static_cast<unsigned int>(x) > width || static_cast<unsigned int>(y) > height)
 			return true;
-		const auto& block = grid->at(static_cast<unsigned int>(x), static_cast<unsigned int>(y));
+		const auto& block = grid->at(static_cast<size_t>(x), static_cast<size_t>(y));
 		return block->isWhite();
 	}
 
