@@ -15,6 +15,7 @@ public:
 		const std::shared_ptr<EntityManager>& manager);
 	
 	void renderActionButton(std::unique_ptr<sf::RenderWindow>& window);
+	void renderTextStats(std::unique_ptr<sf::RenderWindow>& window);
 	bool isButtonClicked(int x, int y);
 	void whenButtonClicked(); // Called when button is clicked
 private:

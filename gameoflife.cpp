@@ -16,8 +16,9 @@ GameOfLife::GameOfLife(const sf::String& title, unsigned int width, unsigned int
 	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), title, style);
 	window->setIcon(iconImage.getSize().x, iconImage.getSize().y, iconImage.getPixelsPtr());
 
+	// TODO: make "width - 200" a ratio not a constant
 	entityManager = std::make_shared<EntityManager>(BLOCK_SIZE, width - 200, height, 200, 0);
-	actionControl = std::make_unique<ActionControl>(10, 10, PLAY_BUTTON_IMAGE_PATH, PAUSE_BUTTON_IMAGE_PATH, entityManager);
+	actionControl = std::make_unique<ActionControl>(50, 50, PLAY_BUTTON_IMAGE_PATH, PAUSE_BUTTON_IMAGE_PATH, entityManager);
 }
 
 void GameOfLife::start() {

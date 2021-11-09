@@ -19,6 +19,8 @@ EntityManager::EntityManager(unsigned int squareSize, unsigned int modeWidth, un
 	  xOffset(xOffsetSize), yOffset(yOffsetSize) 
 {
 	isPlayingMotion = false; // the game is paused at first
+	generationNum = 0;
+	populationCount = 0;
 	grid = std::make_unique<Grid<std::unique_ptr<Entity>>>(width, height);
 }
 
@@ -35,7 +37,8 @@ void EntityManager::initializeEntities() {
 void EntityManager::updateEntities(const sf::Time& deltaTime) {
 	static float elapsedTime = 0;
 	if (isPlayingMotion && elapsedTime >= ENTITY_UPDATE_INTERVAL) {
-		applyGameofLifeRules();
+		populationCount = applyGameofLifeRules();
+		generationNum++;
 		elapsedTime = 0;
 	}
 	else {
@@ -57,11 +60,13 @@ void EntityManager::renderEntities(std::unique_ptr<sf::RenderWindow>& window) {
 * If is dead
 * 1) neighbours == 3 ==> gets to be alive
 */
-void EntityManager::applyGameofLifeRules() {
+unsigned int EntityManager::applyGameofLifeRules() {
+	unsigned int numLiving = 0;
 	for (unsigned int row = 0; row < width; row++) {
 		for (unsigned int col = 0; col < height; col++) {
 			bool isLiving = !getGridEntityStateAt(row, col);
 			unsigned int numNeighbours = getNumNeighbours(row, col);
+
 			if (isLiving && (numNeighbours < 2 || numNeighbours > 3)) {
 				// true = white, false = black
 				gridChangeQueue.push(std::tuple<unsigned int, unsigned int, bool>(row, col, true));
@@ -69,6 +74,7 @@ void EntityManager::applyGameofLifeRules() {
 			else if (!isLiving && numNeighbours == 3) {
 				gridChangeQueue.push(std::tuple<unsigned int, unsigned int, bool>(row, col, false));
 			}
+			numLiving += isLiving;
 		}
 	}
 	while (!gridChangeQueue.empty()) {
@@ -76,6 +82,7 @@ void EntityManager::applyGameofLifeRules() {
 		setGridEntityAt(std::get<0>(ele), std::get<1>(ele), std::get<2>(ele));
 		gridChangeQueue.pop();
 	}
+	return numLiving;
 }
 
 /*

@@ -12,7 +12,7 @@
 #include "entity.hpp"
 #include "grid.hpp"
 
-constexpr float ENTITY_UPDATE_INTERVAL = 1;
+constexpr float ENTITY_UPDATE_INTERVAL = 0.5f;
 
 class EntityManager {
 public:
@@ -76,7 +76,7 @@ public:
 	void setIsPlaying(bool isPlayingMotion);
 	bool isPlaying() const;
 private:
-	void applyGameofLifeRules();
+	unsigned int applyGameofLifeRules();
 	unsigned int getNumNeighbours(int x, int y);
 
 	// Block Stats
@@ -86,7 +86,7 @@ private:
 	// Game of Life Stats
 	bool isPlayingMotion;
 	unsigned int generationNum;
-	unsigned int populationNum;
+	unsigned int populationCount;
 
 	std::unique_ptr<Grid<std::unique_ptr<Entity>>> grid;
 	std::queue<std::tuple<unsigned int, unsigned int, bool>> gridChangeQueue;
