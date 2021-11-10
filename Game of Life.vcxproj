@@ -168,18 +168,17 @@
     <ClCompile Include="entitymanager.cpp" />
     <ClCompile Include="gameoflife.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="rules.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actioncontrol.hpp" />
+    <ClInclude Include="coordutil.hpp" />
     <ClInclude Include="debugmode.hpp" />
     <ClInclude Include="entity.hpp" />
     <ClInclude Include="entitymanager.hpp" />
     <ClInclude Include="gameoflife.hpp" />
     <ClInclude Include="grid.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\Pause.png" />
-    <Image Include="res\Play.png" />
+    <ClInclude Include="rules.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

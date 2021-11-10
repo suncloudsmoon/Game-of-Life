@@ -5,16 +5,25 @@
 #include <iostream>
 #endif
 
-#ifndef DEBUG
-#ifdef _WIN32
+/*
+* TODO:
+* - Add license (MIT-0)
+* - Create font
+* - Add text stats under the play/pause button
+* - Add slow/medium/fast mode
+* - Add game home screen w/ play and settings
+* - Add readme
+* - Share project
+*/
+
+#if !defined DEBUG && defined _WIN32
 int WinMain() {
 	GameOfLife game("Game of Life", 1920, 1080, false);
 	game.start();
 }
-#endif
 #else
 int main() {
-	GameOfLife game("Game of Life", 1920, 1080, false);
+	gol::GameOfLife game("Game of Life", 1920, 1080, false);
 	game.start();
 }
 #endif

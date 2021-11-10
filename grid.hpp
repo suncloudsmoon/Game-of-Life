@@ -2,6 +2,7 @@
 #define GRID_HPP
 
 #include <vector>
+#include <stdexcept>
 
 #include "debugmode.hpp"
 
@@ -12,23 +13,33 @@ public:
 		arr.resize(width * height);
 	}
 
-	T& at(size_t row, size_t col) {
+	template<class A>
+	T& at(A row, A col) {
 		// Range checking
-		if (row >= arrWidth) {
-			throw std::runtime_error("Grid row is greather than or equal to array width!");
+		if (static_cast<size_t>(row) >= arrWidth) {
+			throw std::out_of_range("Grid row is greather than or equal to array width!");
 		}
-		else if (col >= arrHeight) {
-			throw std::runtime_error("Grid column is greater than or equal to array height!");
+		else if (static_cast<size_t>(col) >= arrHeight) {
+			throw std::out_of_range("Grid column is greater than or equal to array height!");
 		}
-		return arr[(row * arrHeight) + col];
+		return arr[(static_cast<size_t>(row) * arrHeight) + static_cast<size_t>(col)];
 	}
 
-	T& operator()(unsigned int row, unsigned int col) {
+	template<class A>
+	T& operator()(A row, A col) {
 		return at(row, col);
 	}
 
 	std::vector<T>& getRawArr() {
 		return arr;
+	}
+
+	size_t getWidth() {
+		return arrWidth;
+	}
+
+	size_t getHeight() {
+		return arrHeight;
 	}
 private:
 	size_t arrWidth, arrHeight;

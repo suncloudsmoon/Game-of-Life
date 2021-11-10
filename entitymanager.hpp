@@ -4,91 +4,79 @@
 #include <memory>
 #include <queue>
 #include <tuple>
+#include <cmath>
 
 #include <SFML/Graphics.hpp>
 
 #include "debugmode.hpp"
 #include "entity.hpp"
 #include "grid.hpp"
+#include "coordutil.hpp"
 
-constexpr float ENTITY_UPDATE_INTERVAL = 0.5f;
+#ifdef DEBUG
+#include <iostream>
+#endif
 
-class EntityManager {
-public:
-	/*
-	* Sets the width and height to (width / blockSize) and (height / blockSize)
-	*/
-	EntityManager(unsigned int squareSize, unsigned int modeWidth, unsigned int modeHeight, 
-		int xOffsetSize=0, int yOffsetSize =0);
-	void initializeEntities(); // white squares with gray border
-	void updateEntities(const sf::Time& deltaTime);
-	void renderEntities(std::unique_ptr<sf::RenderWindow>& window);
+namespace gol {
+	constexpr float ENTITY_UPDATE_INTERVAL = 0.5f;
 
-	// Get / Set Entity Functions
-	template<class T>
-	void setGridEntityAt(T x, T y, bool isWhite) {
-		if (static_cast<unsigned int>(x) > width || static_cast<unsigned int>(y) > height)
-			return;
-		auto& block = grid->at(static_cast<unsigned int>(x), static_cast<unsigned int>(y));
-		block->changeColor(isWhite);
-	}
+	class EntityManager {
+	public:
+		/*
+		* Sets the width and height to (width / blockSize) and (height / blockSize)
+		*/
+		EntityManager(unsigned int squareSize, unsigned int modeWidth, unsigned int modeHeight,
+			int xOffsetSize = 0, int yOffsetSize = 0);
+		void initializeEntities(); // white squares with gray border
+		void updateEntities(const sf::Time& deltaTime);
+		void renderEntities(std::unique_ptr<sf::RenderWindow>& window);
 
-	template<class T>
-	void setEntityAt(T x, T y, bool isWhite) {
-		setGridEntityAt(toBlockyCoordX(x, xOffset, blockSize), toBlockyCoordY(y, yOffset, blockSize), isWhite);
-	}
+		template<class T>
+		bool isWithinGrid(T x, T y) {
+			x = toBlockyCoordX(x, xOffset, blockSize);
+			y = toBlockyCoordY(y, yOffset, blockSize);
+#ifdef DEBUG
+			std::cout << "[isWithinGrid] ";
+			std::cout << "[" << x << "," << y << "]";
+			std::cout << ", Width: " << width;
+			std::cout << ", Height: " << height;
+			std::cout << ", xOffset: " << xOffset;
+			std::cout << ", yOffset: " << yOffset;
+			std::cout << std::endl;
+#endif
+			return (x >= 0 && x < width) && (y >= 0 && y < height);
+		}
 
-	template<class T>
-	bool getGridEntityStateAt(T x, T y) const {
-		if (static_cast<unsigned int>(x) > width || static_cast<unsigned int>(y) > height)
-			return true;
-		const auto& block = grid->at(static_cast<size_t>(x), static_cast<size_t>(y));
-		return block->isWhite();
-	}
+		// Getters
+		std::unique_ptr<Grid<std::unique_ptr<Entity>>>& getGrid();
+		bool isPlaying() const;
 
-	template<class T>
-	bool getEntityStateAt(T x, T y) const {
-		return getGridEntityStateAt(toBlockyCoordX(x, xOffset, blockSize), toBlockyCoordY(y, yOffset, blockSize));
-	}
+		template<class T>
+		bool getEntityStateAt(T x, T y) {
+			return grid->at(toBlockyCoordX(x, xOffset, blockSize), toBlockyCoordY(y, yOffset, blockSize))->isWhite();
+		}
 
-	template<class T, class O, class B>
-	static T toBlockyCoordX(T coordX, O xOffset, B blockSize) {
-		return static_cast<T>(std::floor((coordX - xOffset) / blockSize));
-	}
+		// Setters
+		void setIsPlaying(bool isPlayingMotion);
 
-	template<class T, class O, class B>
-	static T toBlockyCoordY(T coordY, O yOffset, B blockSize) {
-		return static_cast<T>(std::floor((coordY - yOffset) / blockSize));
-	}
+		template<class T>
+		void setEntityStateAt(T x, T y, bool isWhite) {
+			grid->at(toBlockyCoordX(x, xOffset, blockSize), 
+				toBlockyCoordY(y, yOffset, blockSize))->changeColor(isWhite);
+		}
+	private:
+		// Block Stats
+		unsigned int blockSize, width, height;
+		int xOffset, yOffset;
 
-	template<class T, class O, class B>
-	static B toNormalCoordX(T gridX, O xOffset, B blockSize) {
-		return static_cast<B>(gridX * blockSize) + xOffset;
-	}
+		// Game of Life Stats
+		bool isPlayingMotion;
+		unsigned int generationNum;
+		unsigned int populationCount;
 
-	template<class T, class O, class B>
-	static B toNormalCoordY(T gridY, O yOffset, B blockSize) {
-		return static_cast<B>(gridY * blockSize) + yOffset;
-	}
-
-	// Getters and Setters
-	void setIsPlaying(bool isPlayingMotion);
-	bool isPlaying() const;
-private:
-	unsigned int applyGameofLifeRules();
-	unsigned int getNumNeighbours(int x, int y);
-
-	// Block Stats
-	unsigned int blockSize, width, height;
-	int xOffset, yOffset;
-	
-	// Game of Life Stats
-	bool isPlayingMotion;
-	unsigned int generationNum;
-	unsigned int populationCount;
-
-	std::unique_ptr<Grid<std::unique_ptr<Entity>>> grid;
-	std::queue<std::tuple<unsigned int, unsigned int, bool>> gridChangeQueue;
-};
+		std::unique_ptr<Grid<std::unique_ptr<Entity>>> grid;
+		std::queue<std::tuple<unsigned int, unsigned int, bool>> gridChangeQueue;
+	};
+}
 
 #endif /* ENTITYMANAGER_HPP */

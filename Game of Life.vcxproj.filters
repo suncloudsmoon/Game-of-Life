@@ -30,6 +30,9 @@
     <ClCompile Include="actioncontrol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rules.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameoflife.hpp">
@@ -50,13 +53,11 @@
     <ClInclude Include="actioncontrol.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\Pause.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Play.png">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <ClInclude Include="rules.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="coordutil.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
