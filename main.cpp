@@ -16,9 +16,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include <stdexcept>
 
 #include "debugmode.hpp"
 #include "gameoflife.hpp"
+#include "errorbox.hpp"
+
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
 #ifdef DEBUG
 #include <iostream>
@@ -27,6 +33,7 @@
  /*
  * TODO:
  * - Add license (MIT-0)
+ * - Add good logging class, platform-independent warning/error messagebox (using ifdef), and try catch entire program!
  * - Create font
  * - Add text stats under the play/pause button
  * - Add slow/medium/fast mode
@@ -36,9 +43,14 @@
  */
 
 #if !defined DEBUG && defined _WIN32
-int WinMain() {
-	GameOfLife game("Game of Life", 1920, 1080, false);
-	game.start();
+int CALLBACK WinMain(HINSTANCE inst1, HINSTANCE inst2, LPSTR line, int n) {
+	try {
+		gol::GameOfLife game("Game of Life", 1920, 1080, false);
+		game.start();
+	}
+	catch (std::exception& e) {
+		util::displayErrorBox("Runtime Error", e.what());
+	}
 }
 #else
 int main() {

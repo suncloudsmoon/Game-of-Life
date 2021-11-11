@@ -80,7 +80,7 @@ namespace gol {
 
 		template<class T>
 		void setEntityStateAt(T x, T y, bool isWhite) {
-			grid->at(toBlockyCoordX(x, xOffset, blockSize), 
+			grid->at(toBlockyCoordX(x, xOffset, blockSize),
 				toBlockyCoordY(y, yOffset, blockSize))->changeColor(isWhite);
 		}
 	private:

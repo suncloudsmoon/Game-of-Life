@@ -20,6 +20,6 @@
 #ifndef DEBUGMODE_HPP
 #define DEBUGMODE_HPP
 
-#define DEBUG
+//#define DEBUG
 
 #endif /* DEBUGMODE_HPP */
