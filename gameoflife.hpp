@@ -37,6 +37,7 @@ namespace gol {
 	const std::string GAME_ICON_PATH = "res/icon.png";
 	const std::string PLAY_BUTTON_IMAGE_PATH = "res/play.png";
 	const std::string PAUSE_BUTTON_IMAGE_PATH = "res/pause.png";
+	const std::string FONT_PATH = "res/Distracting_Font.ttf";
 
 	class GameOfLife {
 	public:

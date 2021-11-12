@@ -17,6 +17,8 @@
  * SOFTWARE.
  */
 
+#include <string>
+
 #include <SFML/Graphics.hpp>
 
 #include "debugmode.hpp"
@@ -30,10 +32,16 @@
 namespace gol {
 	GameOfLife::GameOfLife(const sf::String& title, unsigned int width, unsigned int height, bool isFullScreen) {
 		if (!iconImage.loadFromFile(GAME_ICON_PATH)) {
-			throw std::runtime_error("Unable to load game icon image!");
+			std::string errMessage = "Unable to load game icon image: ";
+			errMessage += GAME_ICON_PATH;
+			errMessage += "!";
+			throw std::runtime_error(errMessage);
 		}
-		if (!font.loadFromFile("res/Distracting_Font.ttf")) {
-			throw std::runtime_error("Unable to load font!");
+		if (!font.loadFromFile(FONT_PATH)) {
+			std::string errMessage = "Unable to load font: ";
+			errMessage += FONT_PATH;
+			errMessage += "!";
+			throw std::runtime_error(errMessage);
 		}
 		// Window stuff
 		int style = (isFullScreen) ? static_cast<int>(sf::Style::Fullscreen) : static_cast<int>(sf::Style::Default);
