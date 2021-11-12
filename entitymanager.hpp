@@ -67,6 +67,8 @@ namespace gol {
 		}
 
 		// Getters
+		unsigned int getGenerationNum() const;
+		unsigned int getPopulationCount() const;
 		std::unique_ptr<Grid<std::unique_ptr<Entity>>>& getGrid();
 		bool isPlaying() const;
 

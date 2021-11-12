@@ -32,16 +32,19 @@ namespace gol {
 	class ActionControl {
 	public:
 		ActionControl(float posX, float posY, const std::string& playButtonPath, const std::string& pauseButtonPath,
-			const std::shared_ptr<EntityManager>& manager);
+			const sf::Font &font, const std::shared_ptr<EntityManager>& manager);
 
 		void renderActionButton(std::unique_ptr<sf::RenderWindow>& window);
-		//void renderTextStats(std::unique_ptr<sf::RenderWindow>& window);
+		void updateTextStats(float x, float y);
+		void renderTextStats(std::unique_ptr<sf::RenderWindow>& window);
 		bool isButtonClicked(int x, int y);
 		void whenButtonClicked(); // Called when button is clicked
 	private:
 		std::shared_ptr<EntityManager> entityManager;
 		sf::Texture playButtonTexture, pauseButtonTexture;
 		sf::Sprite playButton, pauseButton;
+
+		sf::Text generationNumText, populationNumText;
 
 		bool isPlaying; // Initial value is false
 	};

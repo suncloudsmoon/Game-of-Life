@@ -81,6 +81,13 @@ namespace gol {
 	}
 
 	// Getters
+	unsigned int EntityManager::getGenerationNum() const {
+		return generationNum;
+	}
+	unsigned int EntityManager::getPopulationCount() const {
+		return populationCount;
+	}
+
 	std::unique_ptr<Grid<std::unique_ptr<Entity>>>& EntityManager::getGrid() {
 		return grid;
 	}

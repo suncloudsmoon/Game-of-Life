@@ -53,9 +53,11 @@ namespace gol {
 		void handleAllUserInteractions(const sf::Event& event);
 
 		sf::Image iconImage;
+		sf::Font font;
 		std::unique_ptr<sf::RenderWindow> window;
 		std::shared_ptr<EntityManager> entityManager;
 		std::unique_ptr<ActionControl> actionControl;
+
 	};
 }
 

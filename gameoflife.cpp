@@ -32,6 +32,9 @@ namespace gol {
 		if (!iconImage.loadFromFile(GAME_ICON_PATH)) {
 			throw std::runtime_error("Unable to load game icon image!");
 		}
+		if (!font.loadFromFile("res/Distracting_Font.ttf")) {
+			throw std::runtime_error("Unable to load font!");
+		}
 		// Window stuff
 		int style = (isFullScreen) ? static_cast<int>(sf::Style::Fullscreen) : static_cast<int>(sf::Style::Default);
 		window = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), title, style);
@@ -39,7 +42,8 @@ namespace gol {
 
 		// TODO: make "width - 200" a ratio not a constant
 		entityManager = std::make_shared<EntityManager>(BLOCK_SIZE, width - 200, height, 200, 0);
-		actionControl = std::make_unique<ActionControl>(50, 50, PLAY_BUTTON_IMAGE_PATH, PAUSE_BUTTON_IMAGE_PATH, entityManager);
+		actionControl = std::make_unique<ActionControl>(50, 50, PLAY_BUTTON_IMAGE_PATH,
+														PAUSE_BUTTON_IMAGE_PATH, font, entityManager);
 	}
 
 	void GameOfLife::start() {
@@ -69,6 +73,9 @@ namespace gol {
 		while (window->pollEvent(event)) {
 			handleAllUserInteractions(event);
 		}
+		// Update Stats
+		actionControl->updateTextStats(30, 300);
+
 		// Updating calculations
 		updateAllEntities(deltaTime);
 
@@ -85,6 +92,7 @@ namespace gol {
 	void GameOfLife::drawAllEntities() {
 		entityManager->renderEntities(window);
 		actionControl->renderActionButton(window);
+		actionControl->renderTextStats(window);
 	}
 
 	void GameOfLife::handleAllUserInteractions(const sf::Event& event) {

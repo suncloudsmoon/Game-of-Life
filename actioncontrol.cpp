@@ -26,7 +26,7 @@
 
 namespace gol {
 	ActionControl::ActionControl(float posX, float posY, const std::string& playButtonPath, const std::string& pauseButtonPath,
-		const std::shared_ptr<EntityManager>& manager) : entityManager(manager) {
+		const sf::Font &font, const std::shared_ptr<EntityManager>& manager) : entityManager(manager) {
 		if (!playButtonTexture.loadFromFile(playButtonPath)) {
 			throw std::runtime_error("Unable to load play button from path: " + playButtonPath + "!");
 		}
@@ -39,6 +39,13 @@ namespace gol {
 		playButton.setPosition(posX, posY);
 		pauseButton.setPosition(posX, posY);
 
+		// Initialize the text stuff
+		generationNumText.setFont(font);
+		generationNumText.setCharacterSize(50);
+
+		populationNumText.setFont(font);
+		populationNumText.setCharacterSize(50);
+
 		isPlaying = false;
 	}
 
@@ -49,6 +56,25 @@ namespace gol {
 		else {
 			window->draw(playButton);
 		}
+	}
+
+	void ActionControl::updateTextStats(float x, float y) {
+		// Generation Text
+		sf::String genStr("GEN:\n  ");
+		genStr += std::to_string(entityManager->getGenerationNum());
+		generationNumText.setString(genStr);
+		generationNumText.setPosition(x, y);
+
+		// Popualtion Text
+		sf::String popStr("NUM:\n  ");
+		popStr += std::to_string(entityManager->getPopulationCount());
+		populationNumText.setString(popStr);
+		populationNumText.setPosition(x, y + generationNumText.getCharacterSize() * 3);
+	}
+
+	void ActionControl::renderTextStats(std::unique_ptr<sf::RenderWindow>& window) {
+		window->draw(generationNumText);
+		window->draw(populationNumText);
 	}
 
 	bool ActionControl::isButtonClicked(int x, int y) {
