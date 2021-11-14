@@ -60,13 +60,13 @@ namespace gol {
 
 	void ActionControl::updateTextStats(float x, float y) {
 		// Generation Text
-		sf::String genStr("GEN:\n  ");
+		sf::String genStr("GEN:\n   ");
 		genStr += std::to_string(entityManager->getGenerationNum());
 		generationNumText.setString(genStr);
 		generationNumText.setPosition(x, y);
 
 		// Popualtion Text
-		sf::String popStr("NUM:\n  ");
+		sf::String popStr("NUM:\n   ");
 		popStr += std::to_string(entityManager->getPopulationCount());
 		populationNumText.setString(popStr);
 		populationNumText.setPosition(x, y + generationNumText.getCharacterSize() * 3);
