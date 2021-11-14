@@ -27,21 +27,16 @@
 
 #ifdef DEBUG
 #include <iostream>
+#include <LUA/lua.hpp>
 #endif
 
 namespace gol {
 	GameOfLife::GameOfLife(const sf::String& title, unsigned int width, unsigned int height, bool isFullScreen) {
 		if (!iconImage.loadFromFile(GAME_ICON_PATH)) {
-			std::string errMessage = "Unable to load game icon image: ";
-			errMessage += GAME_ICON_PATH;
-			errMessage += "!";
-			throw std::runtime_error(errMessage);
+			throw std::runtime_error("Unable to load game icon image: " + GAME_ICON_PATH + "!");
 		}
-		if (!font.loadFromFile(FONT_PATH)) {
-			std::string errMessage = "Unable to load font: ";
-			errMessage += FONT_PATH;
-			errMessage += "!";
-			throw std::runtime_error(errMessage);
+		if (!font.loadFromFile(RALEWAY_FONT)) {
+			throw std::runtime_error("Unable to load font: " + RALEWAY_FONT + "!");
 		}
 		// Window stuff
 		int style = (isFullScreen) ? static_cast<int>(sf::Style::Fullscreen) : static_cast<int>(sf::Style::Default);
@@ -52,12 +47,14 @@ namespace gol {
 		entityManager = std::make_shared<EntityManager>(BLOCK_SIZE, width - 200, height, 200, 0);
 		actionControl = std::make_unique<ActionControl>(50, 50, PLAY_BUTTON_IMAGE_PATH,
 														PAUSE_BUTTON_IMAGE_PATH, font, entityManager);
+		scriptManager = std::make_unique<ScriptManager>(entityManager);
 	}
 
 	void GameOfLife::start() {
 		sf::Clock clock;
 		setToDefaultSettings();
 		initialize();
+		initializeScripts();
 		while (window->isOpen()) {
 			update(clock);
 		}
@@ -70,6 +67,13 @@ namespace gol {
 
 	void GameOfLife::initialize() {
 		entityManager->initializeEntities();
+	}
+
+	void GameOfLife::initializeScripts() {
+		if (!scriptManager->loadScriptList(SCRIPT_LIST_PATH)) {
+			scriptManager->writeScriptList(SCRIPT_LIST_PATH);
+		}
+		scriptManager->executeStartFunction(SCRIPT_START_FUNCTION_NAME);
 	}
 
 	void GameOfLife::update(sf::Clock& clock) {
@@ -114,10 +118,15 @@ namespace gol {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 				if (actionControl->isButtonClicked(x, y)) {
 					actionControl->whenButtonClicked();
+					scriptManager->executeButtonPressedFunction("ButtonPressed", entityManager->isPlaying());
 				}
 				else if (entityManager->isWithinGrid(x, y)) {
-					bool state = entityManager->getEntityStateAt(x, y);
-					entityManager->setEntityStateAt(x, y, !state);
+					double blockyCoordX = toBlockyCoordX(x, entityManager->getXOffset(), entityManager->getBlockSize());
+					double blockyCoordY = toBlockyCoordY(y, entityManager->getYOffset(), entityManager->getBlockSize());
+					if (!scriptManager->executeMousePressedFunction("MousePressed", blockyCoordX, blockyCoordY)) {
+						bool state = entityManager->getEntityStateAt(x, y);
+						entityManager->setEntityStateAt(x, y, !state);
+					}
 				}
 			}
 		}

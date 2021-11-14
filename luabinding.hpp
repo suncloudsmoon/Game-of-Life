@@ -17,21 +17,27 @@
  * SOFTWARE.
  */
 
-#ifndef RULES_HPP
-#define RULES_HPP
+#ifndef LUABINDING_HPP
+#define LUABINDING_HPP
 
 #include <memory>
-#include <queue>
-#include <tuple>
+
+#include <LUA/lua.hpp>
 
 #include "debugmode.hpp"
-#include "grid.hpp"
-#include "entity.hpp"
+#include "entitymanager.hpp"
 
 namespace gol {
-	unsigned int applyGameofLifeRules(std::unique_ptr<util::Grid<std::unique_ptr<Entity>>>& grid,
-		std::queue<std::tuple<unsigned int, unsigned int, bool>>& queue);
-	unsigned int getNumNeighbours(const std::unique_ptr<util::Grid<std::unique_ptr<Entity>>>& grid, int x, int y);
+	void luabinding_init(std::shared_ptr<EntityManager>* manager);
+	void luabinding_close();
+
+	// Getters
+	int luabinding_getrows(lua_State* L);
+	int luabinding_getcolumns(lua_State* L);
+	int luabinding_getEntityStateAt(lua_State* L);
+
+	// Setters
+	int luabinding_setEntityStateAt(lua_State* L);
 }
 
-#endif /* RULES_HPP */
+#endif /* LUABINDING_HPP */

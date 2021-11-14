@@ -41,7 +41,7 @@ namespace gol {
 		isPlayingMotion = false; // the game is paused at first
 		generationNum = 0;
 		populationCount = 0;
-		grid = std::make_unique<Grid<std::unique_ptr<Entity>>>(width, height);
+		grid = std::make_unique<util::Grid<std::unique_ptr<Entity>>>(width, height);
 	}
 
 	void EntityManager::initializeEntities() {
@@ -88,12 +88,24 @@ namespace gol {
 		return populationCount;
 	}
 
-	std::unique_ptr<Grid<std::unique_ptr<Entity>>>& EntityManager::getGrid() {
+	std::unique_ptr<util::Grid<std::unique_ptr<Entity>>>& EntityManager::getGrid() {
 		return grid;
 	}
 
 	bool EntityManager::isPlaying() const {
 		return isPlayingMotion;
+	}
+
+	int EntityManager::getXOffset() const {
+		return xOffset;
+	}
+
+	int EntityManager::getYOffset() const {
+		return yOffset;
+	}
+
+	unsigned int EntityManager::getBlockSize() const {
+		return blockSize;
 	}
 
 	// Setters

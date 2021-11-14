@@ -18,6 +18,7 @@
  */
 
 #include <stdexcept>
+#include <csignal>
 
 #include "debugmode.hpp"
 #include "gameoflife.hpp"
@@ -43,8 +44,22 @@
  * - Share project
  */
 
+static void handleSignalErrors(int signal) {
+	switch (signal) {
+	case SIGSEGV:
+		util::displayErrorBox("Fault", "Segmentation Error at unknown location!");
+		break;
+	default:
+		break;
+	}
+}
+
 #if !defined DEBUG && defined _WIN32
 int CALLBACK WinMain(HINSTANCE inst1, HINSTANCE inst2, LPSTR line, int n) {
+	// "Catch" Signal Errors
+	if (std::signal(SIGSEGV, handleSignalErrors) == SIG_ERR) {
+		util::displayErrorBox("Runtime Error", "Unable to initialize signal handler!");
+	}
 	try {
 		gol::GameOfLife game("Game of Life", 1920, 1080, false);
 		game.start();
@@ -59,4 +74,3 @@ int main() {
 	game.start();
 }
 #endif
-

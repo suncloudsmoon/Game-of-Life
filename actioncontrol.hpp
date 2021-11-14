@@ -37,6 +37,7 @@ namespace gol {
 		void renderActionButton(std::unique_ptr<sf::RenderWindow>& window);
 		void updateTextStats(float x, float y);
 		void renderTextStats(std::unique_ptr<sf::RenderWindow>& window);
+		
 		bool isButtonClicked(int x, int y);
 		void whenButtonClicked(); // Called when button is clicked
 	private:

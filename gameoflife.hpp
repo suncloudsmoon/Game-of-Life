@@ -28,6 +28,7 @@
 #include "debugmode.hpp"
 #include "entitymanager.hpp"
 #include "actioncontrol.hpp"
+#include "scriptmanager.hpp"
 
 namespace gol {
 	constexpr unsigned int MAX_FRAMES_PER_SEC = 60;
@@ -37,7 +38,14 @@ namespace gol {
 	const std::string GAME_ICON_PATH = "res/icon.png";
 	const std::string PLAY_BUTTON_IMAGE_PATH = "res/play.png";
 	const std::string PAUSE_BUTTON_IMAGE_PATH = "res/pause.png";
-	const std::string FONT_PATH = "res/Distracting_Font.ttf";
+
+
+	const std::string PERSONAL_FONT_PATH = "res/Distracting_Font.ttf";
+	const std::string RALEWAY_FONT = "res/other_fonts/Raleway.ttf";
+
+
+	const std::string SCRIPT_LIST_PATH = "scripts.txt";
+	const std::string SCRIPT_START_FUNCTION_NAME = "start";
 
 	class GameOfLife {
 	public:
@@ -46,6 +54,7 @@ namespace gol {
 	private:
 		void setToDefaultSettings();
 		void initialize();
+		void initializeScripts();
 
 		void update(sf::Clock& clock);
 		void updateAllEntities(const sf::Time& deltaTime);
@@ -58,7 +67,7 @@ namespace gol {
 		std::unique_ptr<sf::RenderWindow> window;
 		std::shared_ptr<EntityManager> entityManager;
 		std::unique_ptr<ActionControl> actionControl;
-
+		std::unique_ptr<ScriptManager> scriptManager;
 	};
 }
 

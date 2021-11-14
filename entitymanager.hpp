@@ -54,24 +54,18 @@ namespace gol {
 		bool isWithinGrid(T x, T y) {
 			x = toBlockyCoordX(x, xOffset, blockSize);
 			y = toBlockyCoordY(y, yOffset, blockSize);
-#ifdef DEBUG
-			std::cout << "[isWithinGrid] ";
-			std::cout << "[" << x << "," << y << "]";
-			std::cout << ", Width: " << width;
-			std::cout << ", Height: " << height;
-			std::cout << ", xOffset: " << xOffset;
-			std::cout << ", yOffset: " << yOffset;
-			std::cout << std::endl;
-#endif
-			return (x >= 0 && x < width) && (y >= 0 && y < height);
+			return (static_cast<unsigned int>(x) >= 0 && static_cast<unsigned int>(x) < width) 
+				&& (static_cast<unsigned int>(y) >= 0 && static_cast<unsigned int>(y) < height);
 		}
 
 		// Getters
 		unsigned int getGenerationNum() const;
 		unsigned int getPopulationCount() const;
-		std::unique_ptr<Grid<std::unique_ptr<Entity>>>& getGrid();
+		std::unique_ptr<util::Grid<std::unique_ptr<Entity>>>& getGrid();
 		bool isPlaying() const;
-
+		int getXOffset() const;
+		int getYOffset() const;
+		unsigned int getBlockSize() const;
 		template<class T>
 		bool getEntityStateAt(T x, T y) {
 			return grid->at(toBlockyCoordX(x, xOffset, blockSize), toBlockyCoordY(y, yOffset, blockSize))->isWhite();
@@ -79,7 +73,6 @@ namespace gol {
 
 		// Setters
 		void setIsPlaying(bool isPlayingMotion);
-
 		template<class T>
 		void setEntityStateAt(T x, T y, bool isWhite) {
 			grid->at(toBlockyCoordX(x, xOffset, blockSize),
@@ -95,7 +88,7 @@ namespace gol {
 		unsigned int generationNum;
 		unsigned int populationCount;
 
-		std::unique_ptr<Grid<std::unique_ptr<Entity>>> grid;
+		std::unique_ptr<util::Grid<std::unique_ptr<Entity>>> grid;
 		std::queue<std::tuple<unsigned int, unsigned int, bool>> gridChangeQueue;
 	};
 }

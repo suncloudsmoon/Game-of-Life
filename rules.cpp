@@ -20,6 +20,7 @@
 #include <queue>
 #include <memory>
 
+#include "debugmode.hpp"
 #include "rules.hpp"
 #include "grid.hpp"
 
@@ -33,7 +34,7 @@ namespace gol {
 	* If is dead
 	* 1) neighbours == 3 ==> gets to be alive
 	*/
-	unsigned int applyGameofLifeRules(std::unique_ptr<Grid<std::unique_ptr<Entity>>>& grid,
+	unsigned int applyGameofLifeRules(std::unique_ptr<util::Grid<std::unique_ptr<Entity>>>& grid,
 		std::queue<std::tuple<unsigned int, unsigned int, bool>>& queue) {
 		unsigned int numLiving = 0;
 		for (size_t row = 0; row < grid->getWidth(); row++) {
@@ -60,7 +61,7 @@ namespace gol {
 	* - - -
 	* - - -
 	*/
-	unsigned int getNumNeighbours(const std::unique_ptr<Grid<std::unique_ptr<Entity>>>& grid, int x, int y) {
+	unsigned int getNumNeighbours(const std::unique_ptr<util::Grid<std::unique_ptr<Entity>>>& grid, int x, int y) {
 		unsigned int numNeighbours = 0;
 		// Left
 		if (x - 1 >= 0) {

@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include "debugmode.hpp"
+
 namespace util {
 	void displayErrorBox(const std::string& title, const std::string& message);
 }
