@@ -54,8 +54,13 @@ static void handleSignalErrors(int signal) {
 	}
 }
 
-#if !defined DEBUG && defined _WIN32
-int CALLBACK WinMain(HINSTANCE inst1, HINSTANCE inst2, LPSTR line, int n) {
+#if !defined DEBUG
+#ifdef _WIN32
+int CALLBACK WinMain(HINSTANCE inst1, HINSTANCE inst2, LPSTR line, int n)
+#else
+int main()
+#endif
+{
 	// "Catch" Signal Errors
 	if (std::signal(SIGSEGV, handleSignalErrors) == SIG_ERR) {
 		util::displayErrorBox("Runtime Error", "Unable to initialize signal handler!");
@@ -69,7 +74,8 @@ int CALLBACK WinMain(HINSTANCE inst1, HINSTANCE inst2, LPSTR line, int n) {
 	}
 }
 #else
-int main() {
+int main()
+{
 	gol::GameOfLife game("Game of Life", 1920, 1080, false);
 	game.start();
 }

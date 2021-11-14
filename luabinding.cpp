@@ -33,18 +33,40 @@ namespace gol {
 	}
 
 	int luabinding_getrows(lua_State* L) {
+		if (entityManager == nullptr)
+			throw std::invalid_argument("Entity Manager Pointer is null!");
 		double result = static_cast<double>((*entityManager)->getGrid()->getWidth());
 		lua_pushnumber(L, result);
 		return 1;
 	}
 
 	int luabinding_getcolumns(lua_State* L) {
+		if (entityManager == nullptr)
+			throw std::invalid_argument("Entity Manager Pointer is null!");
 		double result = static_cast<double>((*entityManager)->getGrid()->getHeight());
 		lua_pushnumber(L, result);
 		return 1;
 	}
 
+	int luabinding_getGenerationCount(lua_State* L) {
+		if (entityManager == nullptr)
+			throw std::invalid_argument("Entity Manager Pointer is null!");
+		unsigned int generationNum = (*entityManager)->getGenerationNum();
+		lua_pushnumber(L, static_cast<lua_Number>(generationNum));
+		return 1;
+	}
+
+	int luabinding_getPopulationCount(lua_State* L) {
+		if (entityManager == nullptr)
+			throw std::invalid_argument("Entity Manager Pointer is null!");
+		unsigned int populationNum = (*entityManager)->getPopulationCount();
+		lua_pushnumber(L, static_cast<lua_Number>(populationNum));
+		return 1;
+	}
+
 	int luabinding_getEntityStateAt(lua_State* L) {
+		if (entityManager == nullptr)
+			throw std::invalid_argument("Entity Manager Pointer is null!");
 		double arg1 = lua_tonumber(L, 1);
 		double arg2 = lua_tonumber(L, 2);
 
@@ -54,6 +76,8 @@ namespace gol {
 	}
 
 	int luabinding_setEntityStateAt(lua_State* L) {
+		if (entityManager == nullptr)
+			throw std::invalid_argument("Entity Manager Pointer is null!");
 		double arg1 = lua_tonumber(L, 1);
 		double arg2 = lua_tonumber(L, 2);
 		bool arg3 = static_cast<bool>(lua_toboolean(L, 3));

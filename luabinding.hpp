@@ -34,6 +34,8 @@ namespace gol {
 	// Getters
 	int luabinding_getrows(lua_State* L);
 	int luabinding_getcolumns(lua_State* L);
+	int luabinding_getGenerationCount(lua_State* L);
+	int luabinding_getPopulationCount(lua_State* L);
 	int luabinding_getEntityStateAt(lua_State* L);
 
 	// Setters

@@ -68,10 +68,13 @@ namespace gol {
 		luaL_openlibs(L); // Open all the standard library functions
 
 		// Bind C Functions
-		lua_register(L, "GetEntityStateAt", luabinding_getEntityStateAt);
-		lua_register(L, "SetEntityStateAt", luabinding_setEntityStateAt);
 		lua_register(L, "GetRows", luabinding_getrows);
 		lua_register(L, "GetColumns", luabinding_getcolumns);
+		lua_register(L, "GetGenerationCount", luabinding_getGenerationCount);
+		lua_register(L, "GetPopulationCount", luabinding_getPopulationCount);
+		lua_register(L, "GetEntityStateAt", luabinding_getEntityStateAt);
+
+		lua_register(L, "SetEntityStateAt", luabinding_setEntityStateAt);
 	}
 
 	int ScriptManager::executeLuaFunction(const std::string& functName, const std::function<int(lua_State*)>& job,
