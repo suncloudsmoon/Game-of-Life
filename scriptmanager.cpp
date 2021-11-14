@@ -122,10 +122,7 @@ namespace gol {
 			return lua_pcall(L, 2, 1, 0);
 		};
 		auto success = [&](lua_State* L, int& code) {
-			if (code)
-				code = code && lua_toboolean(L, -1);
-			else
-				code = lua_toboolean(L, -1);
+			return code = code || lua_toboolean(L, -1);
 		};
 		return executeLuaFunction(functName, job, success);
 	}
