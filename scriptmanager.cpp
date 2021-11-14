@@ -70,6 +70,8 @@ namespace gol {
 		// Bind C Functions
 		lua_register(L, "GetEntityStateAt", luabinding_getEntityStateAt);
 		lua_register(L, "SetEntityStateAt", luabinding_setEntityStateAt);
+		lua_register(L, "GetRows", luabinding_getrows);
+		lua_register(L, "GetColumns", luabinding_getcolumns);
 	}
 
 	int ScriptManager::executeLuaFunction(const std::string& functName, const std::function<int(lua_State*)>& job,
