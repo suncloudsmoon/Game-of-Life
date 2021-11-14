@@ -98,9 +98,7 @@ namespace gol {
 		auto job = [&](lua_State* L) {
 			return lua_pcall(L, 0, 0, 0);
 		};
-		auto success = [&](lua_State* L, int &code) {
-			return code;
-		};
+		auto success = [&](lua_State* L, int& code) {};
 		executeLuaFunction(functName, job, success);
 	}
 
@@ -109,9 +107,7 @@ namespace gol {
 			lua_pushboolean(L, state);
 			return lua_pcall(L, 1, 0, 0);
 		};
-		auto success = [&](lua_State* L, int& code) {
-			return code;
-		};
+		auto success = [&](lua_State* L, int& code) {};
 		executeLuaFunction(functName, job, success);
 	}
 
@@ -122,7 +118,7 @@ namespace gol {
 			return lua_pcall(L, 2, 1, 0);
 		};
 		auto success = [&](lua_State* L, int& code) {
-			return code = code || lua_toboolean(L, -1);
+			code = code || lua_toboolean(L, -1);
 		};
 		return executeLuaFunction(functName, job, success);
 	}
